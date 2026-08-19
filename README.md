@@ -97,13 +97,13 @@ experimentation-causal-inference/
 ## Project Plan
 
 ### Phase 1 — Power Analysis & Experiment Design (Week 1)
-- [ ] Repo scaffolding, environment setup
-- [ ] EDA on the Hillstrom dataset
-- [ ] Power / MDE calculator: baseline rate + traffic + desired effect size → sample
+- [x] Repo scaffolding, environment setup
+- [x] EDA on the Hillstrom dataset
+- [x] Power / MDE calculator: baseline rate + traffic + desired effect size → sample
       size & runtime
-- [ ] Sequential testing / peeking-problem demo (why early stopping inflates false
+- [x] Sequential testing / peeking-problem demo (why early stopping inflates false
       positives)
-- [ ] Output: `notebooks/01_power_analysis.ipynb` + writeup
+- [x] Output: `notebooks/01_power_analysis.ipynb` + writeup
 
 ### Phase 2 — CUPED & Variance Reduction (Week 2)
 - [ ] Implement CUPED by hand using pre-experiment covariates on the Hillstrom data
@@ -174,8 +174,26 @@ source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
+Datasets are gitignored (see `data/raw/`). To fetch the Hillstrom dataset used
+in Phases 1, 2, and 5:
+
+```bash
+curl -L -o data/raw/hillstrom.csv.gz \
+  https://hillstorm1.s3.us-east-2.amazonaws.com/hillstorm_no_indices.csv.gz
+gunzip data/raw/hillstrom.csv.gz
+```
+
 ## Status
 
-🚧 Not started — Phase 0 decisions locked, repo scaffolded (this commit). See
-checkboxes above for progress once work begins. See [CLAUDE.md](CLAUDE.md) for the
-full build plan and working conventions.
+🚧 In progress — Phase 1 (power analysis & experiment design) complete. See
+checkboxes above for progress and [CLAUDE.md](CLAUDE.md) for the full build plan
+and working conventions.
+
+**Phase 1 summary:** Built a two-proportion-test power/MDE calculator
+(`src/power_analysis.py`, cross-checked against `statsmodels`), used it to show
+the real Hillstrom email test was well-powered for the effect it found, and ran
+a from-scratch simulation showing that "peeking" at a fixed-horizon test and
+stopping at the first significant read inflates the false positive rate from a
+nominal 5% to ~24% — a concrete demonstration of experiment design judgment,
+not just a working calculator. See `notebooks/01_power_analysis.ipynb` and
+`writeups/power_analysis.md`.

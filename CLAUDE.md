@@ -141,4 +141,9 @@ experimentation-causal-toolkit/
 
 ## Current status
 
-Not yet started — this file is the initial scope. Update this section as weeks are completed.
+Week 1 (power analysis & experiment design) complete: repo scaffolded, Hillstrom
+dataset fetched into `data/raw/` (gitignored, see README for the fetch command),
+`src/power_analysis.py` implements the sample-size/MDE calculator plus a peeking
+simulation, `notebooks/01_power_analysis.ipynb` runs EDA + a randomization
+balance check + the calculator + the peeking demo end to end, and
+`writeups/power_analysis.md` has the full writeup. Next: Week 2 (CUPED).
