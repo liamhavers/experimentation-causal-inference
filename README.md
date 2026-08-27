@@ -106,9 +106,9 @@ experimentation-causal-inference/
 - [x] Output: `notebooks/01_power_analysis.ipynb` + writeup
 
 ### Phase 2 — CUPED & Variance Reduction (Week 2)
-- [ ] Implement CUPED by hand using pre-experiment covariates on the Hillstrom data
-- [ ] Show variance reduction numerically and visually (CI width before/after)
-- [ ] Output: `notebooks/02_cuped.ipynb` + writeup with before/after CI plot
+- [x] Implement CUPED by hand using pre-experiment covariates on the Hillstrom data
+- [x] Show variance reduction numerically and visually (CI width before/after)
+- [x] Output: `notebooks/02_cuped.ipynb` + writeup with before/after CI plot
 
 ### Phase 3 — Heterogeneous Treatment Effects / Uplift Modelling (Week 3)
 - [ ] Switch to the Criteo Uplift dataset
@@ -185,9 +185,9 @@ gunzip data/raw/hillstrom.csv.gz
 
 ## Status
 
-🚧 In progress — Phase 1 (power analysis & experiment design) complete. See
-checkboxes above for progress and [CLAUDE.md](CLAUDE.md) for the full build plan
-and working conventions.
+🚧 In progress — Phases 1-2 (power analysis and CUPED) complete. See checkboxes
+above for progress and [CLAUDE.md](CLAUDE.md) for the full build plan and
+working conventions.
 
 **Phase 1 summary:** Built a two-proportion-test power/MDE calculator
 (`src/power_analysis.py`, cross-checked against `statsmodels`), used it to show
@@ -197,3 +197,13 @@ stopping at the first significant read inflates the false positive rate from a
 nominal 5% to ~24% — a concrete demonstration of experiment design judgment,
 not just a working calculator. See `notebooks/01_power_analysis.ipynb` and
 `writeups/power_analysis.md`.
+
+**Phase 2 summary:** Implemented CUPED by hand (`src/cuped.py`, both
+single- and multi-covariate versions, cross-checked against the theoretical
+`1 - corr²`/`1 - R²` variance reduction), checked real pre-treatment covariate
+strength before applying it — finding Hillstrom's covariates are weak for
+`visit` and negligible for `conversion`/`spend`, an honest data-driven call
+rather than blind application — and used a labeled synthetic example to show
+the ~36% variance reduction CUPED delivers with a strong covariate, then tied
+that reduction back to the Week 1 calculator as an equivalent traffic/MDE
+saving. See `notebooks/02_cuped.ipynb` and `writeups/cuped.md`.

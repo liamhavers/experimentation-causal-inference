@@ -146,4 +146,13 @@ dataset fetched into `data/raw/` (gitignored, see README for the fetch command),
 `src/power_analysis.py` implements the sample-size/MDE calculator plus a peeking
 simulation, `notebooks/01_power_analysis.ipynb` runs EDA + a randomization
 balance check + the calculator + the peeking demo end to end, and
-`writeups/power_analysis.md` has the full writeup. Next: Week 2 (CUPED).
+`writeups/power_analysis.md` has the full writeup.
+
+Week 2 (CUPED & variance reduction) complete: `src/cuped.py` implements CUPED
+by hand (single- and multi-covariate), `notebooks/02_cuped.ipynb` checks real
+covariate strength on Hillstrom before applying it (weak for `visit`,
+negligible for `conversion`/`spend`), demonstrates the raw result honestly,
+then uses a labeled synthetic strong-covariate example to show the method's
+full effect, and ties variance reduction back to the Week 1 power calculator.
+`writeups/cuped.md` has the full writeup. Next: Week 3 (uplift modelling on
+Criteo).
