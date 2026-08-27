@@ -111,12 +111,12 @@ experimentation-causal-inference/
 - [x] Output: `notebooks/02_cuped.ipynb` + writeup with before/after CI plot
 
 ### Phase 3 — Heterogeneous Treatment Effects / Uplift Modelling (Week 3)
-- [ ] Switch to the Criteo Uplift dataset
-- [ ] Implement a T-learner or X-learner (stretch: causal forest via econml/causalml)
-- [ ] Identify and visualize segments with differential treatment response
-- [ ] Cost-based targeting policy: treat where uplift exceeds cost of treatment,
+- [x] Switch to the Criteo Uplift dataset
+- [x] Implement a T-learner or X-learner (stretch: causal forest via econml/causalml)
+- [x] Identify and visualize segments with differential treatment response
+- [x] Cost-based targeting policy: treat where uplift exceeds cost of treatment,
       estimate incremental revenue/profit vs. blanket rollout
-- [ ] Output: `notebooks/03_uplift_modeling.ipynb` + writeup covering both the model
+- [x] Output: `notebooks/03_uplift_modeling.ipynb` + writeup covering both the model
       comparison and the targeting policy / profit estimate
 
 ### Phase 4 — Metrics Framework, Guardrails & Packaging (Week 4)
@@ -183,11 +183,20 @@ curl -L -o data/raw/hillstrom.csv.gz \
 gunzip data/raw/hillstrom.csv.gz
 ```
 
+To fetch the Criteo Uplift dataset used in Phase 3 (~311MB compressed,
+~3.2GB extracted):
+
+```bash
+curl -L -o data/raw/criteo-uplift.csv.gz \
+  https://criteostorage.blob.core.windows.net/criteo-research-datasets/criteo-uplift-v2.1.csv.gz
+gunzip data/raw/criteo-uplift.csv.gz
+```
+
 ## Status
 
-🚧 In progress — Phases 1-2 (power analysis and CUPED) complete. See checkboxes
-above for progress and [CLAUDE.md](CLAUDE.md) for the full build plan and
-working conventions.
+🚧 In progress — Phases 1-3 (power analysis, CUPED, uplift modelling) complete.
+See checkboxes above for progress and [CLAUDE.md](CLAUDE.md) for the full build
+plan and working conventions.
 
 **Phase 1 summary:** Built a two-proportion-test power/MDE calculator
 (`src/power_analysis.py`, cross-checked against `statsmodels`), used it to show
@@ -207,3 +216,16 @@ rather than blind application — and used a labeled synthetic example to show
 the ~36% variance reduction CUPED delivers with a strong covariate, then tied
 that reduction back to the Week 1 calculator as an equivalent traffic/MDE
 saving. See `notebooks/02_cuped.ipynb` and `writeups/cuped.md`.
+
+**Phase 3 summary:** Switched to the Criteo Uplift dataset (~14M rows) and
+implemented S-, T-, and X-learner uplift meta-learners (`src/uplift.py`),
+confirming clean randomization first (R²≈0 for treatment regressed on all
+features). Evaluated with a Qini curve and found the simplest model
+(S-learner) narrowly topped the leaderboard despite its known shrinkage
+bias — a concrete lesson in checking the metric rather than assuming the
+fancier learner wins — then built a cost-based targeting policy
+(`src/targeting_policy.py`) on the X-learner, evaluated via inverse-
+propensity weighting on real held-out outcomes, showing a targeted policy
+nets 37% more profit than blanket rollout while treating only 12.5% of
+users. See `notebooks/03_uplift_modeling.ipynb` and
+`writeups/uplift_modeling.md`.

@@ -154,5 +154,18 @@ covariate strength on Hillstrom before applying it (weak for `visit`,
 negligible for `conversion`/`spend`), demonstrates the raw result honestly,
 then uses a labeled synthetic strong-covariate example to show the method's
 full effect, and ties variance reduction back to the Week 1 power calculator.
-`writeups/cuped.md` has the full writeup. Next: Week 3 (uplift modelling on
-Criteo).
+`writeups/cuped.md` has the full writeup.
+
+Week 3 (heterogeneous treatment effects / uplift modelling) complete:
+switched to the Criteo Uplift dataset (~14M rows, fetched into `data/raw/`,
+see README for the fetch command), `src/uplift.py` implements S-, T-, and
+X-learner meta-learners plus Qini-curve and per-decile evaluation,
+`src/targeting_policy.py` implements a cost-based targeting policy with
+IPW-based offline policy evaluation. `notebooks/03_uplift_modeling.ipynb`
+confirms clean randomization, compares the three learners (S-learner
+narrowly won on Qini despite its shrinkage bias — noted honestly rather
+than assumed away), visualizes response heterogeneity, and estimates the
+targeting policy's profit vs. blanket rollout (+37% profit at 12.5% of
+users treated, with a cost-sensitivity sweep). `writeups/uplift_modeling.md`
+has the full writeup. Next: Week 4 (metrics framework & guardrail
+simulation).
