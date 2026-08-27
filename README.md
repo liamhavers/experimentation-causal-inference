@@ -120,13 +120,13 @@ experimentation-causal-inference/
       comparison and the targeting policy / profit estimate
 
 ### Phase 4 — Metrics Framework, Guardrails & Packaging (Week 4)
-- [ ] Define a hypothetical product scenario (checkout flow or onboarding funnel)
-- [ ] Metrics framework doc: north star metric, guardrail metrics, common failure
+- [x] Define a hypothetical product scenario (checkout flow or onboarding funnel)
+- [x] Metrics framework doc: north star metric, guardrail metrics, common failure
       modes
-- [ ] Guardrail violation simulation: a worked, runnable example where the primary
+- [x] Guardrail violation simulation: a worked, runnable example where the primary
       metric improves but a guardrail degrades
-- [ ] Polish all notebooks/plots for portfolio and interview use
-- [ ] Output: `notebooks/04_guardrail_simulation.ipynb`,
+- [x] Polish all notebooks/plots for portfolio and interview use
+- [x] Output: `notebooks/04_guardrail_simulation.ipynb`,
       `writeups/metrics_framework.md`, final README, one-page summary doc
 
 ### Phase 5 — Bandits & Adaptive Allocation (Week 5)
@@ -194,9 +194,11 @@ gunzip data/raw/criteo-uplift.csv.gz
 
 ## Status
 
-🚧 In progress — Phases 1-3 (power analysis, CUPED, uplift modelling) complete.
-See checkboxes above for progress and [CLAUDE.md](CLAUDE.md) for the full build
-plan and working conventions.
+🚧 In progress — Phases 1-4 (power analysis, CUPED, uplift modelling, metrics
+framework & guardrails) complete. See checkboxes above for progress and
+[CLAUDE.md](CLAUDE.md) for the full build plan and working conventions. A
+one-page portfolio summary of the whole project so far is at
+[writeups/one_pager.md](writeups/one_pager.md).
 
 **Phase 1 summary:** Built a two-proportion-test power/MDE calculator
 (`src/power_analysis.py`, cross-checked against `statsmodels`), used it to show
@@ -229,3 +231,18 @@ propensity weighting on real held-out outcomes, showing a targeted policy
 nets 37% more profit than blanket rollout while treating only 12.5% of
 users. See `notebooks/03_uplift_modeling.ipynb` and
 `writeups/uplift_modeling.md`.
+
+**Phase 4 summary:** Defined a checkout-flow scenario ("Quick Checkout")
+with a north star (checkout completion) and a targeted guardrail (delivery-
+failure rate), then built a worked, runnable simulation
+(`src/guardrail_simulation.py`) where the primary metric improves
+significantly while the guardrail degrades significantly — diagnosed the
+regression down to a specific subgroup, and showed the $-based decision
+flips the naive "ship it" call to a net loss of ~$422K per million
+sessions. Also built compact runnable demos of Simpson's paradox (a pooled
+result that reverses sign vs. every subgroup), novelty effects (a real
+effect that decays, so even a full-length cumulative readout overstates
+long-run impact ~3x), and network/spillover contamination (found — and
+reported honestly — that a shared-inventory constraint compressed rather
+than inflated the measured effect). See `notebooks/04_guardrail_simulation.ipynb`
+and `writeups/metrics_framework.md`.

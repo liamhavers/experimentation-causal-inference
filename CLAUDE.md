@@ -167,5 +167,19 @@ narrowly won on Qini despite its shrinkage bias — noted honestly rather
 than assumed away), visualizes response heterogeneity, and estimates the
 targeting policy's profit vs. blanket rollout (+37% profit at 12.5% of
 users treated, with a cost-sensitivity sweep). `writeups/uplift_modeling.md`
-has the full writeup. Next: Week 4 (metrics framework & guardrail
-simulation).
+has the full writeup.
+
+Week 4 (metrics framework & guardrails) complete: `src/guardrail_simulation.py`
+implements four simulations — a checkout-flow "Quick Checkout" scenario
+where a primary metric (checkout completion) improves while a guardrail
+(delivery-failure rate) degrades, diagnosed to a specific subgroup and
+priced into a net-negative $ decision (~$422K loss/million sessions); plus
+Simpson's paradox (a ramping-rollout confound reversing the pooled sign),
+novelty effects (a decaying true effect that even a full-length cumulative
+readout overstates ~3x), and shared-inventory spillover (found to compress
+rather than inflate the measured effect — reported as found, not forced to
+match the initial hypothesis). `notebooks/04_guardrail_simulation.ipynb`
+runs all four end to end. `writeups/metrics_framework.md` has the north
+star/guardrail framework, failure-mode writeups, and a decision checklist.
+`writeups/one_pager.md` is a new portfolio-ready summary of Weeks 1-4. Next:
+Week 5 (bandits vs. fixed-horizon A/B testing on Hillstrom).
