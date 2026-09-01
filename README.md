@@ -130,10 +130,10 @@ experimentation-causal-inference/
       `writeups/metrics_framework.md`, final README, one-page summary doc
 
 ### Phase 5 — Bandits & Adaptive Allocation (Week 5)
-- [ ] Implement a multi-armed bandit (Thompson sampling or epsilon-greedy) on the
+- [x] Implement a multi-armed bandit (Thompson sampling or epsilon-greedy) on the
       same Hillstrom dataset used in Phase 1
-- [ ] Compare cumulative regret / results against the fixed-horizon A/B test
-- [ ] Output: `notebooks/05_bandits.ipynb` + writeup on when to use a bandit vs. a
+- [x] Compare cumulative regret / results against the fixed-horizon A/B test
+- [x] Output: `notebooks/05_bandits.ipynb` + writeup on when to use a bandit vs. a
       fixed A/B test
 
 ### Optional Phase 6 — Further Stretch
@@ -194,10 +194,11 @@ gunzip data/raw/criteo-uplift.csv.gz
 
 ## Status
 
-🚧 In progress — Phases 1-4 (power analysis, CUPED, uplift modelling, metrics
-framework & guardrails) complete. See checkboxes above for progress and
-[CLAUDE.md](CLAUDE.md) for the full build plan and working conventions. A
-one-page portfolio summary of the whole project so far is at
+✅ Core build complete — Phases 1-5 (power analysis, CUPED, uplift modelling,
+metrics framework & guardrails, bandits) done. See checkboxes above for
+progress and [CLAUDE.md](CLAUDE.md) for the full build plan and working
+conventions. Optional Phase 6 stretch items remain open. A one-page
+portfolio summary of the whole project is at
 [writeups/one_pager.md](writeups/one_pager.md).
 
 **Phase 1 summary:** Built a two-proportion-test power/MDE calculator
@@ -246,3 +247,17 @@ long-run impact ~3x), and network/spillover contamination (found — and
 reported honestly — that a shared-inventory constraint compressed rather
 than inflated the measured effect). See `notebooks/04_guardrail_simulation.ipynb`
 and `writeups/metrics_framework.md`.
+
+**Phase 5 summary:** Implemented epsilon-greedy and Thompson sampling
+bandits from scratch (`src/bandits.py`) and ran them against Week 1's
+actual fixed-split design on the same 64,000-email Hillstrom budget, with
+every simulated reward drawn from the real recorded outcomes. Thompson
+sampling cut cumulative regret by ~97.5% vs. the fixed split (56.8 vs.
+2,303 foregone visits) — worth ~2,246 extra visits on the same budget with
+zero extra spend. But its own data couldn't reproduce Week 1's clean
+result: the same Womens-vs-No-Email comparison that was significant at
+p<0.001 under the fixed split's ~21,300-per-arm sample came out
+non-significant (p=0.32, CI crossing zero) under Thompson sampling's own
+~260-to-1,176-pull sample sizes — a concrete demonstration of exactly what
+a bandit's efficiency gain costs a stakeholder report. See
+`notebooks/05_bandits.ipynb` and `writeups/bandits_vs_ab_testing.md`.

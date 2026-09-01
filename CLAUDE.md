@@ -181,5 +181,19 @@ rather than inflate the measured effect — reported as found, not forced to
 match the initial hypothesis). `notebooks/04_guardrail_simulation.ipynb`
 runs all four end to end. `writeups/metrics_framework.md` has the north
 star/guardrail framework, failure-mode writeups, and a decision checklist.
-`writeups/one_pager.md` is a new portfolio-ready summary of Weeks 1-4. Next:
-Week 5 (bandits vs. fixed-horizon A/B testing on Hillstrom).
+`writeups/one_pager.md` is a portfolio-ready summary of the project.
+
+Week 5 (bandits vs. fixed-horizon A/B testing) complete: `src/bandits.py`
+implements epsilon-greedy and Thompson sampling from scratch, vectorized
+across simulations, with rewards drawn via bootstrap resampling from
+Hillstrom's real recorded `visit` outcomes. `notebooks/05_bandits.ipynb`
+runs both against Week 1's actual fixed-split design on the same
+64,000-email budget: Thompson sampling cuts cumulative regret ~97.5%
+(56.8 vs. 2,303 foregone visits, worth ~2,246 extra visits at zero extra
+spend), but its own sample sizes can't reproduce Week 1's significant
+Womens-vs-No-Email result (p=0.32 vs. p<0.001 under the fixed split) — a
+concrete demonstration of the bandit/fixed-test trade-off rather than an
+assertion of it. `writeups/bandits_vs_ab_testing.md` has the full writeup,
+including a decision guide for when to use which. This completes the core
+5-week build; `writeups/one_pager.md` reflects all 5 weeks. Only the
+optional Phase 6 stretch items remain.

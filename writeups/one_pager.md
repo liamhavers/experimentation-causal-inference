@@ -12,7 +12,7 @@ causal inference, and metrics judgment — this project demonstrates that
 directly, end to end, on public datasets, with every technique paired to a
 plain-English writeup built to survive interview follow-up questions.
 
-## What's built (Weeks 1-4 of 5, in progress)
+## What's built (all 5 core weeks complete)
 
 **Week 1 — Power analysis & experiment design** (Hillstrom, 64K rows).
 Built a two-proportion-test sample-size/MDE calculator from first
@@ -56,6 +56,19 @@ effects (a full-length cumulative readout still overstating long-run impact
 found — and reported honestly — to *compress* rather than inflate the
 measured effect, against the naive assumption).
 
+**Week 5 — Bandits vs. fixed-horizon A/B testing** (Hillstrom). Implemented
+epsilon-greedy and Thompson sampling from scratch, run against Week 1's
+actual fixed-split design on the same 64,000-email budget, with every
+simulated reward drawn from the real recorded outcomes. Thompson sampling
+cut cumulative regret **~97.5%** versus the fixed split (56.8 vs. 2,303
+foregone visits — worth ~2,246 extra visits at zero extra spend), but its
+own sample sizes couldn't reproduce Week 1's result: the same
+Womens-vs-No-Email comparison that was significant at **p<0.001** under
+the fixed split came out **non-significant (p=0.32)** under Thompson
+sampling's own much smaller per-arm samples — a concrete demonstration,
+not just an assertion, of what a bandit's efficiency gain costs a
+stakeholder report.
+
 ## Why this matters
 
 Every result above ties a statistical technique to a business number or a
@@ -65,9 +78,10 @@ how much traffic it costs to trust it, and what it's worth once you do.
 
 ## What's next
 
-Week 5 adds a multi-armed bandit on the same Hillstrom dataset used in
-Week 1, comparing cumulative regret against the fixed-horizon A/B test and
-writing up when each approach is the right call.
+The core 5-week build is complete. Optional stretch extensions (a
+Streamlit app wrapping the power calculator, a Bayesian-vs-frequentist
+comparison, a short note on interference/network effects) are listed as
+Phase 6 in `CLAUDE.md` if the project continues further.
 
 ---
 *Full repo, code, and writeups: see the [README](../README.md).*
