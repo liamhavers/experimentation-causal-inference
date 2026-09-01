@@ -31,10 +31,15 @@ to *explain* these concepts fluently in an interview, not just have working note
 
 1. **Hillstrom MineThatData Email Analytics Dataset** — used for power analysis,
    sequential testing, and CUPED (Weeks 1–2). Small, clean, good for fundamentals.
+   Reused in Week 5 (bandits) and Week 6 (propensity matching validated against
+   the known RCT effect).
 2. **Criteo Uplift Modeling Dataset** — used for heterogeneous treatment effects /
    uplift modelling at realistic scale (Week 3). Large — be mindful of memory/runtime.
+   Reused in Week 6: its `treatment`/`exposure` columns are a real one-sided
+   noncompliance instrumental-variables setup, not something built for the
+   occasion.
 
-## Build plan (4 weeks)
+## Build plan (6 weeks)
 
 ### Week 1 — Power Analysis & Experiment Design
 - Repo scaffolding, environment setup (pandas, scipy, statsmodels, numpy, matplotlib)
@@ -86,7 +91,36 @@ to *explain* these concepts fluently in an interview, not just have working note
   reporting/stakeholder trust)
 - Output: `notebooks/05_bandits.ipynb` + writeup
 
-### Optional Week 6 (further stretch)
+### Week 6 — Quasi-Experimental Methods
+Added after the original 5-week plan, once Weeks 1-5 were complete: both prior
+datasets are RCTs, and quasi-experimental methods exist specifically for when
+random assignment *isn't* available — so this week deliberately builds two
+scenarios where that gap is real (Criteo) or engineered (Hillstrom), each with
+a way to check the answer against a known truth rather than trusting the
+method on faith.
+- **Instrumental variables** on Criteo's real `treatment` (instrument) →
+  `exposure` (endogenous, one-sided noncompliance — exposure is only ever 1
+  when treatment=1) → `visit`/`conversion` (outcome). Recover the LATE via
+  the Wald estimator and cross-check with 2SLS (`linearmodels`), and contrast
+  against the naive as-treated (exposed vs. unexposed) estimate to show why
+  the naive comparison is confounded — no synthetic construction needed, this
+  is a genuine natural experiment already sitting in data fetched in Week 3.
+- **Propensity score matching / IPW validated against a known RCT effect**
+  on Hillstrom (Mens E-Mail vs. No E-Mail, true ATE known from Week 1).
+  Deliberately construct a confounded observational-style subsample by
+  biasing *retention* (not outcomes — real recorded outcomes throughout) on
+  real pre-treatment covariates, show the naive comparison on that biased
+  sample is wrong, then recover the true effect with PSM, IPW, and
+  regression adjustment — the standard way causal-inference methodologists
+  validate an estimator (LaLonde-style benchmarking) before trusting it on
+  data where the truth isn't known.
+- Writeup: IV and PSM/IPW assumptions (relevance, exclusion restriction,
+  monotonicity; unconfoundedness, overlap), and when a quasi-experimental
+  method is the right call vs. when a real RCT (Weeks 1-5) is achievable and
+  should be preferred.
+- Output: `notebooks/06_quasi_experimental_methods.ipynb` + writeup
+
+### Optional Week 7 (further stretch)
 - Streamlit app wrapping the power calculator
 - Blog-style writeup of CUPED + uplift findings for LinkedIn/portfolio site
 - Bayesian vs. frequentist comparison on the Hillstrom test
@@ -105,20 +139,24 @@ experimentation-causal-toolkit/
 │   ├── 02_cuped.ipynb
 │   ├── 03_uplift_modeling.ipynb       # includes cost-based targeting policy
 │   ├── 04_guardrail_simulation.ipynb
-│   └── 05_bandits.ipynb
+│   ├── 05_bandits.ipynb
+│   └── 06_quasi_experimental_methods.ipynb
 ├── src/
 │   ├── power_analysis.py
 │   ├── cuped.py
 │   ├── uplift.py
 │   ├── targeting_policy.py
 │   ├── guardrail_simulation.py
-│   └── bandits.py
+│   ├── bandits.py
+│   ├── instrumental_variables.py
+│   └── propensity_matching.py
 ├── writeups/
 │   ├── power_analysis.md
 │   ├── cuped.md
 │   ├── uplift_modeling.md
 │   ├── metrics_framework.md
-│   └── bandits_vs_ab_testing.md
+│   ├── bandits_vs_ab_testing.md
+│   └── quasi_experimental_methods.md
 └── requirements.txt
 ```
 
@@ -195,5 +233,24 @@ Womens-vs-No-Email result (p=0.32 vs. p<0.001 under the fixed split) — a
 concrete demonstration of the bandit/fixed-test trade-off rather than an
 assertion of it. `writeups/bandits_vs_ab_testing.md` has the full writeup,
 including a decision guide for when to use which. This completes the core
-5-week build; `writeups/one_pager.md` reflects all 5 weeks. Only the
-optional Phase 6 stretch items remain.
+5-week build.
+
+Week 6 (quasi-experimental methods) complete, added after the original
+5-week plan since Weeks 1-5 all used real RCTs: `src/instrumental_variables.py`
+implements the Wald estimator, a first-stage-strength (weak-instrument)
+diagnostic, and a manual 2SLS for illustration; `src/propensity_matching.py`
+implements propensity estimation, standardized-mean-difference balance
+checks, nearest-neighbor matching, IPW, and regression adjustment. Part A
+of `notebooks/06_quasi_experimental_methods.ipynb` uses Criteo's real
+`treatment`/`exposure` columns (genuine one-sided noncompliance, not
+constructed) as an instrument, recovering a LATE of 0.287 on `visit`
+(exact match to `linearmodels`' IV2SLS) against a naive as-treated estimate
+that overstates the true effect by ~32%. Part B deliberately confounds a
+resampled version of the Hillstrom RCT (real outcomes, biased retention)
+and validates matching/IPW/regression adjustment against the already-known
+true ATE (0.0766) — all three recover it closely (IPW within 0.5%) where
+the naive comparison is 56.5% too high. `writeups/quasi_experimental_methods.md`
+has the full writeup, including assumption checklists and a decision guide
+for IV vs. propensity methods vs. just running an RCT.
+`writeups/one_pager.md` reflects all 6 weeks. Only the optional Phase 7
+stretch items remain.

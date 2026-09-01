@@ -12,7 +12,7 @@ causal inference, and metrics judgment — this project demonstrates that
 directly, end to end, on public datasets, with every technique paired to a
 plain-English writeup built to survive interview follow-up questions.
 
-## What's built (all 5 core weeks complete)
+## What's built (all 6 core weeks complete)
 
 **Week 1 — Power analysis & experiment design** (Hillstrom, 64K rows).
 Built a two-proportion-test sample-size/MDE calculator from first
@@ -69,6 +69,21 @@ sampling's own much smaller per-arm samples — a concrete demonstration,
 not just an assertion, of what a bandit's efficiency gain costs a
 stakeholder report.
 
+**Week 6 — Quasi-experimental methods** (Criteo + Hillstrom). Added after
+the original plan, since Weeks 1-5 all used real RCTs and most real
+product decisions don't come with one. Two validated demonstrations: (1)
+**instrumental variables** on a genuine natural experiment already inside
+the Criteo data — `treatment` as a randomized instrument for `exposure`
+(one-sided noncompliance, not constructed for the occasion) — recovered a
+LATE of **0.287** on `visit` via the Wald estimator, exactly matching a
+`linearmodels` IV2SLS cross-check, and showed the naive as-treated
+comparison **overstates the true effect by ~32%**; (2) **propensity score
+matching, IPW, and regression adjustment validated against a known
+answer** — deliberately confounded a resampled version of the Hillstrom
+RCT (real outcomes, biased retention only) and confirmed all three methods
+recover the already-known true ATE closely (IPW within **0.5%**) from a
+sample where the naive comparison was **56.5% too high**.
+
 ## Why this matters
 
 Every result above ties a statistical technique to a business number or a
@@ -78,10 +93,10 @@ how much traffic it costs to trust it, and what it's worth once you do.
 
 ## What's next
 
-The core 5-week build is complete. Optional stretch extensions (a
+The core 6-week build is complete. Optional stretch extensions (a
 Streamlit app wrapping the power calculator, a Bayesian-vs-frequentist
 comparison, a short note on interference/network effects) are listed as
-Phase 6 in `CLAUDE.md` if the project continues further.
+Phase 7 in `CLAUDE.md` if the project continues further.
 
 ---
 *Full repo, code, and writeups: see the [README](../README.md).*

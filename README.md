@@ -62,6 +62,10 @@ than open-ended.
 - Demonstrate metrics framework thinking — north star, guardrails, common failure
   modes (Simpson's paradox, novelty effects, network/spillover contamination)
 - Demonstrate judgment on when to use a bandit vs. a fixed-horizon A/B test
+- Demonstrate quasi-experimental methods (instrumental variables, propensity
+  score matching/IPW) for the common case where a real RCT isn't available —
+  validated against a real natural experiment and a known ground-truth effect
+  respectively, not just run on faith
 - Pair every technique with a plain-English writeup that holds up under interview
   follow-up questions
 
@@ -77,20 +81,24 @@ experimentation-causal-inference/
 │   ├── 02_cuped.ipynb
 │   ├── 03_uplift_modeling.ipynb       # includes cost-based targeting policy
 │   ├── 04_guardrail_simulation.ipynb
-│   └── 05_bandits.ipynb
+│   ├── 05_bandits.ipynb
+│   └── 06_quasi_experimental_methods.ipynb
 ├── src/
 │   ├── power_analysis.py
 │   ├── cuped.py
 │   ├── uplift.py
 │   ├── targeting_policy.py
 │   ├── guardrail_simulation.py
-│   └── bandits.py
+│   ├── bandits.py
+│   ├── instrumental_variables.py
+│   └── propensity_matching.py
 ├── writeups/
 │   ├── power_analysis.md
 │   ├── cuped.md
 │   ├── uplift_modeling.md
 │   ├── metrics_framework.md
-│   └── bandits_vs_ab_testing.md
+│   ├── bandits_vs_ab_testing.md
+│   └── quasi_experimental_methods.md
 └── requirements.txt
 ```
 
@@ -136,7 +144,19 @@ experimentation-causal-inference/
 - [x] Output: `notebooks/05_bandits.ipynb` + writeup on when to use a bandit vs. a
       fixed A/B test
 
-### Optional Phase 6 — Further Stretch
+### Phase 6 — Quasi-Experimental Methods (Week 6)
+Added after the original 5-week plan: Weeks 1-5 all used real RCTs, and
+quasi-experimental methods exist for the far more common case where random
+assignment isn't available.
+- [x] Instrumental variables on Criteo's real `treatment`/`exposure` columns
+      (one-sided noncompliance) — Wald estimator, first-stage strength check,
+      2SLS cross-check (`linearmodels`), naive-vs-corrected comparison
+- [x] Propensity score matching, IPW, and regression adjustment validated
+      against a known RCT effect — deliberately confound a resampled version
+      of the Hillstrom RCT and check whether each method recovers the truth
+- [x] Output: `notebooks/06_quasi_experimental_methods.ipynb` + writeup
+
+### Optional Phase 7 — Further Stretch
 - [ ] Streamlit app wrapping the power calculator
 - [ ] Blog-style writeup of CUPED + uplift findings for LinkedIn/portfolio
 - [ ] Bayesian vs. frequentist comparison on the Hillstrom test
@@ -147,7 +167,7 @@ experimentation-causal-inference/
 
 - **Language**: Python
 - **Data/stats**: pandas, numpy, scipy, statsmodels, scikit-learn
-- **Causal inference**: econml, causalml
+- **Causal inference**: econml, causalml, linearmodels (IV/2SLS)
 - **Datasets**: Hillstrom MineThatData Email Analytics (fundamentals, small/clean),
   Criteo Uplift Modeling Dataset (heterogeneous treatment effects, realistic scale)
 - **Notebooks**: Jupyter
@@ -194,11 +214,11 @@ gunzip data/raw/criteo-uplift.csv.gz
 
 ## Status
 
-✅ Core build complete — Phases 1-5 (power analysis, CUPED, uplift modelling,
-metrics framework & guardrails, bandits) done. See checkboxes above for
-progress and [CLAUDE.md](CLAUDE.md) for the full build plan and working
-conventions. Optional Phase 6 stretch items remain open. A one-page
-portfolio summary of the whole project is at
+✅ Core build complete — Phases 1-6 (power analysis, CUPED, uplift modelling,
+metrics framework & guardrails, bandits, quasi-experimental methods) done.
+See checkboxes above for progress and [CLAUDE.md](CLAUDE.md) for the full
+build plan and working conventions. Optional Phase 7 stretch items remain
+open. A one-page portfolio summary of the whole project is at
 [writeups/one_pager.md](writeups/one_pager.md).
 
 **Phase 1 summary:** Built a two-proportion-test power/MDE calculator
@@ -261,3 +281,19 @@ non-significant (p=0.32, CI crossing zero) under Thompson sampling's own
 ~260-to-1,176-pull sample sizes — a concrete demonstration of exactly what
 a bandit's efficiency gain costs a stakeholder report. See
 `notebooks/05_bandits.ipynb` and `writeups/bandits_vs_ab_testing.md`.
+
+**Phase 6 summary:** Added after the original plan, since Weeks 1-5 all
+used real RCTs and quasi-experimental methods exist for when random
+assignment isn't available. Two parts: (1) instrumental variables on a
+genuine natural experiment already in the Criteo data (`treatment` as a
+randomized instrument for `exposure`, one-sided noncompliance) — recovered
+a LATE of 0.287 on `visit` via the Wald estimator (exact match to
+`linearmodels`' IV2SLS), and showed the naive as-treated comparison
+overstates the true exposure effect by ~32%; (2) propensity score
+matching, IPW, and regression adjustment validated against a *known*
+answer — deliberately confounded a resampled version of the Hillstrom RCT
+(real outcomes, biased retention) and confirmed all three methods recover
+the true 0.0766 ATE closely (IPW within 0.5%) from a sample where the
+naive comparison was 56.5% too high. See
+`notebooks/06_quasi_experimental_methods.ipynb` and
+`writeups/quasi_experimental_methods.md`.
