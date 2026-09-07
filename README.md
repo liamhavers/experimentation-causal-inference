@@ -35,10 +35,10 @@ than open-ended.
   line by line in an interview. Each technique gets working code *and* a markdown
   writeup explaining the why, not just the what.
 - **Manual implementation where it aids understanding, libraries otherwise**: CUPED
-  is implemented by hand (covariate adjustment via correlation with a pre-period
-  outcome is more valuable to demonstrate directly than a black-box call), while
-  power analysis, sequential testing, and uplift modelling lean on
-  statsmodels/scipy/econml/causalml — well-known, defensible tools over custom
+  and the S/T/X-learner uplift meta-learners are implemented by hand (the mechanism
+  is the point — a black-box call would hide it), each cross-checked against a
+  known result. Power analysis, sequential testing, and the IV/2SLS work lean on
+  statsmodels / scipy / linearmodels — well-known, defensible tools over custom
   reimplementations.
 - **The targeting policy is a core deliverable, not an afterthought**: Week 3 doesn't
   stop at comparing uplift models — it turns model output into an actual targeting
@@ -128,7 +128,8 @@ experimentation-causal-inference/
 
 ### Phase 3 — Heterogeneous Treatment Effects / Uplift Modelling (Week 3)
 - [x] Switch to the Criteo Uplift dataset
-- [x] Implement a T-learner or X-learner (stretch: causal forest via econml/causalml)
+- [x] Implement S-, T-, and X-learner meta-learners by hand on scikit-learn base
+      models (the causal-forest stretch via econml/causalml was not pursued)
 - [x] Identify and visualize segments with differential treatment response
 - [x] Cost-based targeting policy: treat where uplift exceeds cost of treatment,
       estimate incremental revenue/profit vs. blanket rollout
@@ -180,10 +181,12 @@ assignment isn't available.
 
 - **Language**: Python
 - **Data/stats**: pandas, numpy, scipy, statsmodels, scikit-learn
-- **Causal inference**: econml, causalml, linearmodels (IV/2SLS)
+- **Causal inference**: linearmodels (IV/2SLS); the uplift meta-learners and CUPED
+  are hand-rolled on scikit-learn / numpy
 - **Datasets**: Hillstrom MineThatData Email Analytics (fundamentals, small/clean),
   Criteo Uplift Modeling Dataset (heterogeneous treatment effects, realistic scale)
 - **Notebooks**: Jupyter
+- **App**: Streamlit (`app/power_calculator.py`)
 - **Visualization**: matplotlib, seaborn — portfolio-quality, labeled and titled,
   exportable as PNG
 
@@ -194,8 +197,8 @@ assignment isn't available.
 2. **Code and writeup, paired, always** — a technique isn't done until both the
    implementation and the plain-English *why* exist.
 3. **Defensible libraries by default, manual implementation where it teaches
-   something** — statsmodels/scipy/econml/causalml unless hand-rolling the logic
-   (e.g. CUPED) builds real understanding.
+   something** — statsmodels / scipy / linearmodels unless hand-rolling the logic
+   (CUPED, the uplift meta-learners, the bandits) builds real understanding.
 4. **Business framing is the finish line** — uplift modelling ends in a targeting
    policy and a profit estimate, not just a model comparison.
 

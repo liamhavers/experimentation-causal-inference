@@ -133,6 +133,8 @@ method on faith.
 experimentation-causal-toolkit/
 ├── CLAUDE.md
 ├── README.md
+├── app/
+│   └── power_calculator.py           # Streamlit UI over src/power_analysis.py (Week 7)
 ├── data/                  # raw + processed datasets (gitignored if large)
 ├── notebooks/
 │   ├── 01_power_analysis.ipynb
@@ -140,7 +142,9 @@ experimentation-causal-toolkit/
 │   ├── 03_uplift_modeling.ipynb       # includes cost-based targeting policy
 │   ├── 04_guardrail_simulation.ipynb
 │   ├── 05_bandits.ipynb
-│   └── 06_quasi_experimental_methods.ipynb
+│   ├── 06_quasi_experimental_methods.ipynb
+│   ├── 07_bayesian_vs_frequentist.ipynb        # Week 7 stretch
+│   └── 08_interference_network_effects.ipynb   # Week 7 stretch
 ├── src/
 │   ├── power_analysis.py
 │   ├── cuped.py
@@ -149,14 +153,20 @@ experimentation-causal-toolkit/
 │   ├── guardrail_simulation.py
 │   ├── bandits.py
 │   ├── instrumental_variables.py
-│   └── propensity_matching.py
+│   ├── propensity_matching.py
+│   ├── bayesian_ab.py                # Week 7 stretch
+│   └── interference.py               # Week 7 stretch
 ├── writeups/
 │   ├── power_analysis.md
 │   ├── cuped.md
 │   ├── uplift_modeling.md
 │   ├── metrics_framework.md
 │   ├── bandits_vs_ab_testing.md
-│   └── quasi_experimental_methods.md
+│   ├── quasi_experimental_methods.md
+│   ├── bayesian_vs_frequentist.md              # Week 7 stretch
+│   ├── interference_network_effects.md         # Week 7 stretch
+│   ├── one_pager.md
+│   └── figures/                      # exported PNGs, numbered 01-31
 └── requirements.txt
 ```
 
@@ -168,9 +178,11 @@ experimentation-causal-toolkit/
   markdown writeup explaining the *why*, not just the *what*.
 - Keep statistical explanations precise but accessible — I have a strong maths
   background (BSc Maths) but am still building causal inference fluency specifically.
-- Favor well-known, defensible libraries (statsmodels, scipy, econml/causalml) over
-  custom implementations, except where implementing from scratch aids understanding
-  (e.g. a manual CUPED implementation is more valuable here than a black-box library call).
+- Favor well-known, defensible libraries (statsmodels, scipy, scikit-learn,
+  linearmodels) over custom implementations, except where implementing from scratch
+  aids understanding (e.g. a manual CUPED implementation is more valuable here than a
+  black-box library call). econml/causalml were considered for a causal-forest
+  stretch but not used — the uplift meta-learners are hand-rolled on scikit-learn.
 - Plots should be portfolio-quality: labeled, titled, exportable as PNG for use in
   a CV/portfolio site or interview deck.
 - After each week's work, help me draft a 2-3 sentence plain-English summary of what

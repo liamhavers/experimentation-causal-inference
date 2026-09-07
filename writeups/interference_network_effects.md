@@ -27,7 +27,8 @@ measured effect rather than inflating it). This note adds the
 
 `make_clustered_network` builds a stochastic block model — 50 clusters of
 48 units, dense within a cluster, very sparse across (**96.7% of edges stay
-inside one cluster**). Outcome model:
+inside one cluster**; degree distribution and block structure in
+`writeups/figures/28_network_structure.png`). Outcome model:
 
 ```
 p_i = baseline + direct·T_i + spillover·(fraction of i's neighbours treated)   [+ per-cluster shift]

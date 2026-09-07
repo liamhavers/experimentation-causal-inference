@@ -6,7 +6,5 @@ scikit-learn
 matplotlib
 seaborn
 jupyter
-econml
-causalml
 linearmodels
 streamlit
