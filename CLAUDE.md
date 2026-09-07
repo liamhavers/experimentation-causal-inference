@@ -276,5 +276,18 @@ rule) inflates the false-win rate ~5% -> ~21%, mirroring Week 1's
 frequentist peeking result. Figures 24-27. `writeups/bayesian_vs_frequentist.md`
 has the full writeup; README and one_pager updated.
 
-Remaining Week 7 items: Streamlit power calculator, interference/network-
-effects note.
+Week 7b (Streamlit power calculator) complete: `app/power_calculator.py`
+is a Streamlit UI over `src/power_analysis.py` (imported unchanged, no
+logic duplicated). Three tabs — sample size given a target MDE (with
+daily-traffic runtime and a live sample-size-vs-MDE curve), minimum
+detectable effect for a fixed sample (direct n or daily-traffic x days,
+with an MDE-vs-n curve), and an interactive peeking simulator wrapping
+`simulate_peeking` (fixed-horizon vs. peeking FPR, inflation factor,
+per-look calibration chart). Sidebar has shared alpha/power/baseline
+inputs and a one-click Hillstrom preset. `streamlit` added to
+requirements.txt. Smoke-tested headless via `streamlit.testing.v1.AppTest`
+(no exceptions across all input paths); numbers reconcile with the Week 1
+writeup (e.g. Hillstrom preset + 10% relative MDE -> 13,789/arm vs. the
+notebook's 13,794).
+
+Remaining Week 7 item: interference/network-effects note.

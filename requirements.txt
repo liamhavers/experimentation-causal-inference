@@ -9,3 +9,4 @@ jupyter
 econml
 causalml
 linearmodels
+streamlit

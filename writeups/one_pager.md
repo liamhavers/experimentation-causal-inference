@@ -95,6 +95,10 @@ the Bayesian expected-loss framing still gives a defensible ship call; the
 prior only moves the posterior when it's both informative and fighting a
 small sample; and a `P(T>C) > 0.95` early-stop rule inflates the false-win
 rate from ~5% to ~21% under peeking — Week 1's trap in Bayesian clothing.
+Also shipped `app/power_calculator.py`, a Streamlit UI over the Week 1
+calculator: sample size ↔ MDE ↔ runtime, minimum detectable effect for a
+fixed sample, and a live peeking simulator, all with curves that update as
+the sliders move.
 
 ## Why this matters
 
@@ -105,10 +109,9 @@ how much traffic it costs to trust it, and what it's worth once you do.
 
 ## What's next
 
-The core 6-week build is complete and the Bayesian-vs-frequentist stretch
-item is done. Remaining Phase 7 extensions in `CLAUDE.md`: a Streamlit app
-wrapping the power calculator, and a short note on interference/network
-effects.
+The core 6-week build is complete; the Bayesian-vs-frequentist comparison
+and the Streamlit power-calculator app are done. Remaining Phase 7
+extension in `CLAUDE.md`: a short note on interference/network effects.
 
 ---
 *Full repo, code, and writeups: see the [README](../README.md).*

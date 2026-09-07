@@ -75,6 +75,8 @@ than open-ended.
 experimentation-causal-inference/
 ├── CLAUDE.md
 ├── README.md
+├── app/
+│   └── power_calculator.py           # Streamlit UI over src/power_analysis.py
 ├── data/                  # raw + processed datasets (gitignored)
 ├── notebooks/
 │   ├── 01_power_analysis.ipynb
@@ -163,7 +165,8 @@ assignment isn't available.
 - [x] Bayesian vs. frequentist comparison on the Hillstrom test — Beta-Bernoulli
       analysis from scratch, credible intervals / `P(T>C)` / expected loss vs. the
       z-test, plus prior-sensitivity and Bayesian optional-stopping demos
-- [ ] Streamlit app wrapping the power calculator
+- [x] Streamlit app wrapping the power calculator — `app/power_calculator.py`,
+      interactive sample-size / MDE / peeking-simulator UI over `src/power_analysis.py`
 - [ ] Short note on interference/network effects (cluster randomization, switchback
       tests)
 - [x] ~~Blog-style writeup of CUPED + uplift findings~~ — dropped
@@ -217,15 +220,21 @@ curl -L -o data/raw/criteo-uplift.csv.gz \
 gunzip data/raw/criteo-uplift.csv.gz
 ```
 
+To launch the interactive power calculator (Phase 7):
+
+```bash
+streamlit run app/power_calculator.py
+```
+
 ## Status
 
 ✅ Core build complete — Phases 1-6 (power analysis, CUPED, uplift modelling,
 metrics framework & guardrails, bandits, quasi-experimental methods) done.
-Optional Phase 7 in progress: the Bayesian-vs-frequentist comparison is done;
-the Streamlit power calculator and the interference/network-effects note
-remain. See checkboxes above for progress and [CLAUDE.md](CLAUDE.md) for the
-full build plan and working conventions. A one-page portfolio summary of the
-whole project is at [writeups/one_pager.md](writeups/one_pager.md).
+Optional Phase 7 in progress: the Bayesian-vs-frequentist comparison and the
+Streamlit power-calculator app are done; the interference/network-effects
+note remains. See checkboxes above for progress and [CLAUDE.md](CLAUDE.md)
+for the full build plan and working conventions. A one-page portfolio summary
+of the whole project is at [writeups/one_pager.md](writeups/one_pager.md).
 
 **Phase 1 summary:** Built a two-proportion-test power/MDE calculator
 (`src/power_analysis.py`, cross-checked against `statsmodels`), used it to show
@@ -319,3 +328,10 @@ from ~5% to ~21% under peeking — the same failure as Week 1's frequentist
 demo, in Bayesian clothing. See
 `notebooks/07_bayesian_vs_frequentist.ipynb` and
 `writeups/bayesian_vs_frequentist.md`.
+
+Also built `app/power_calculator.py`, a Streamlit UI over
+`src/power_analysis.py` — three tabs (sample size ↔ MDE ↔ calendar
+runtime, minimum detectable effect for a fixed sample, and a live peeking
+simulator) with the sample-size-vs-MDE and MDE-vs-n curves updating as the
+sliders move, and a one-click Hillstrom preset. `streamlit run
+app/power_calculator.py`.
