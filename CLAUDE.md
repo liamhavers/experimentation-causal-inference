@@ -290,4 +290,27 @@ requirements.txt. Smoke-tested headless via `streamlit.testing.v1.AppTest`
 writeup (e.g. Hillstrom preset + 10% relative MDE -> 13,789/arm vs. the
 notebook's 13,794).
 
-Remaining Week 7 item: interference/network-effects note.
+Week 7c (interference / network-effects note) complete:
+`src/interference.py` implements a stochastic-block-model network builder,
+a spillover outcome model (`p_i` depends on the treated fraction of `i`'s
+neighbours, plus an optional per-cluster shift), individual- vs.
+cluster-randomization estimators, and a switchback simulator with
+settling/carryover, an AR(1) period noise, and an optional washout.
+`notebooks/08_interference_network_effects.ipynb` shows: individual
+randomization on a connected network recovers only the direct effect
+(+0.039 vs. a true global effect of 0.11, -65% bias); cluster
+randomization recovers it near-unbiased (+0.108) but with ~1.3x the
+sampling SD and a unit-level SE (0.018) that badly understates the honest
+cluster-level SE (0.028) — the design effect; and a switchback block-length
+sweep where carryover bias falls from -50% (block length 1, no washout
+possible) to near zero with a one-period washout at length >= 2, while the
+true sampling SD rises with block length and the naive IID SE stays flat
+(understating it ~35% by length 12). Figures 28-31.
+`writeups/interference_network_effects.md` is the note; it cross-references
+Week 4's `simulate_shared_inventory_spillover` as the worked
+marketplace-resource example. README and one_pager updated.
+
+All optional Phase 7 stretch items are now done (Bayesian vs. frequentist,
+Streamlit power calculator, interference note); the blog-style writeup was
+dropped by user decision. The project is complete unless further work is
+requested.

@@ -12,7 +12,7 @@ causal inference, and metrics judgment — this project demonstrates that
 directly, end to end, on public datasets, with every technique paired to a
 plain-English writeup built to survive interview follow-up questions.
 
-## What's built (all 6 core weeks complete)
+## What's built (6 core weeks + Phase 7 stretch, all complete)
 
 **Week 1 — Power analysis & experiment design** (Hillstrom, 64K rows).
 Built a two-proportion-test sample-size/MDE calculator from first
@@ -98,7 +98,13 @@ rate from ~5% to ~21% under peeking — Week 1's trap in Bayesian clothing.
 Also shipped `app/power_calculator.py`, a Streamlit UI over the Week 1
 calculator: sample size ↔ MDE ↔ runtime, minimum detectable effect for a
 fixed sample, and a live peeking simulator, all with curves that update as
-the sliders move.
+the sliders move. And a short **interference / network-effects** note
+(`src/interference.py`): on a simulated clustered social network with
+treatment spillover, an individually randomized A/B test misses ~two-thirds
+of the true global effect (−65% bias); cluster randomization recovers it
+but pays a design-effect variance cost, and a switchback simulation shows
+the marketplace-case trade-off (carryover bias vs. block length, washout,
+and an IID SE that understates the true uncertainty).
 
 ## Why this matters
 
@@ -109,9 +115,9 @@ how much traffic it costs to trust it, and what it's worth once you do.
 
 ## What's next
 
-The core 6-week build is complete; the Bayesian-vs-frequentist comparison
-and the Streamlit power-calculator app are done. Remaining Phase 7
-extension in `CLAUDE.md`: a short note on interference/network effects.
+The core 6-week build is complete, and all optional Phase 7 stretch items
+are done: the Bayesian-vs-frequentist comparison, the Streamlit
+power-calculator app, and the interference/network-effects note.
 
 ---
 *Full repo, code, and writeups: see the [README](../README.md).*

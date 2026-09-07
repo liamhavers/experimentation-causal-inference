@@ -85,7 +85,8 @@ experimentation-causal-inference/
 │   ├── 04_guardrail_simulation.ipynb
 │   ├── 05_bandits.ipynb
 │   ├── 06_quasi_experimental_methods.ipynb
-│   └── 07_bayesian_vs_frequentist.ipynb
+│   ├── 07_bayesian_vs_frequentist.ipynb
+│   └── 08_interference_network_effects.ipynb
 ├── src/
 │   ├── power_analysis.py
 │   ├── cuped.py
@@ -95,7 +96,8 @@ experimentation-causal-inference/
 │   ├── bandits.py
 │   ├── instrumental_variables.py
 │   ├── propensity_matching.py
-│   └── bayesian_ab.py
+│   ├── bayesian_ab.py
+│   └── interference.py
 ├── writeups/
 │   ├── power_analysis.md
 │   ├── cuped.md
@@ -103,7 +105,8 @@ experimentation-causal-inference/
 │   ├── metrics_framework.md
 │   ├── bandits_vs_ab_testing.md
 │   ├── quasi_experimental_methods.md
-│   └── bayesian_vs_frequentist.md
+│   ├── bayesian_vs_frequentist.md
+│   └── interference_network_effects.md
 └── requirements.txt
 ```
 
@@ -167,8 +170,10 @@ assignment isn't available.
       z-test, plus prior-sensitivity and Bayesian optional-stopping demos
 - [x] Streamlit app wrapping the power calculator — `app/power_calculator.py`,
       interactive sample-size / MDE / peeking-simulator UI over `src/power_analysis.py`
-- [ ] Short note on interference/network effects (cluster randomization, switchback
-      tests)
+- [x] Short note on interference/network effects — `src/interference.py` +
+      `notebooks/08_interference_network_effects.ipynb`: individual randomization is
+      biased under social-graph spillover; cluster randomization and switchback tests
+      as the fixes, each with its cost (design effect; carryover / serial correlation)
 - [x] ~~Blog-style writeup of CUPED + uplift findings~~ — dropped
 
 ## Tech Stack
@@ -230,11 +235,11 @@ streamlit run app/power_calculator.py
 
 ✅ Core build complete — Phases 1-6 (power analysis, CUPED, uplift modelling,
 metrics framework & guardrails, bandits, quasi-experimental methods) done.
-Optional Phase 7 in progress: the Bayesian-vs-frequentist comparison and the
-Streamlit power-calculator app are done; the interference/network-effects
-note remains. See checkboxes above for progress and [CLAUDE.md](CLAUDE.md)
-for the full build plan and working conventions. A one-page portfolio summary
-of the whole project is at [writeups/one_pager.md](writeups/one_pager.md).
+Optional Phase 7 also complete: Bayesian-vs-frequentist comparison, the
+Streamlit power-calculator app, and the interference/network-effects note.
+See checkboxes above for progress and [CLAUDE.md](CLAUDE.md) for the full
+build plan and working conventions. A one-page portfolio summary of the
+whole project is at [writeups/one_pager.md](writeups/one_pager.md).
 
 **Phase 1 summary:** Built a two-proportion-test power/MDE calculator
 (`src/power_analysis.py`, cross-checked against `statsmodels`), used it to show
@@ -335,3 +340,16 @@ runtime, minimum detectable effect for a fixed sample, and a live peeking
 simulator) with the sample-size-vs-MDE and MDE-vs-n curves updating as the
 sliders move, and a one-click Hillstrom preset. `streamlit run
 app/power_calculator.py`.
+
+And a short note on **interference / network effects**
+(`src/interference.py`, `notebooks/08_interference_network_effects.ipynb`):
+on a simulated clustered social network with treatment spillover, an
+individually randomized A/B test recovers only the direct effect and
+misses ~two-thirds of the true global effect (−65% bias). Cluster
+randomization recovers it near-unbiased but pays a design-effect variance
+cost and needs a cluster-level SE; a switchback simulation shows the
+marketplace-case trade-off — carryover bias that shrinks with block
+length, a washout that removes it, and an IID SE that increasingly
+understates the true uncertainty as blocks lengthen. Builds on Week 4's
+shared-inventory spillover sim. See
+`writeups/interference_network_effects.md`.
