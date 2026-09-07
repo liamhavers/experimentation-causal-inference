@@ -252,5 +252,29 @@ true ATE (0.0766) — all three recover it closely (IPW within 0.5%) where
 the naive comparison is 56.5% too high. `writeups/quasi_experimental_methods.md`
 has the full writeup, including assumption checklists and a decision guide
 for IV vs. propensity methods vs. just running an RCT.
-`writeups/one_pager.md` reflects all 6 weeks. Only the optional Phase 7
-stretch items remain.
+`writeups/one_pager.md` reflects all 6 weeks.
+
+Week 7 (optional stretch) started. Scope decided with the user: Bayesian
+vs. frequentist first, Streamlit power calculator second, interference/
+network-effects note third; the blog-style CUPED+uplift writeup was
+dropped.
+
+Week 7a (Bayesian vs. frequentist) complete: `src/bayesian_ab.py`
+implements the Beta-Bernoulli conjugate analysis from scratch — posterior
+update, credible intervals, Monte-Carlo `P(treatment > control)` with
+reported MC error, posterior lift summary, decision-theoretic expected
+loss, a frequentist two-proportion wrapper, and a vectorized Bayesian
+optional-stopping simulator. `notebooks/07_bayesian_vs_frequentist.ipynb`
+runs the same Hillstrom Womens-vs-No-Email `visit` comparison both ways:
+at full sample the credible interval and the Wald CI match to four decimal
+places (the divergence is only in what each may claim); at n=150/arm the
+z-test is inconclusive (p=0.31) while the Bayesian expected-loss framing
+still supports a ship decision; a prior-sensitivity sweep shows the prior
+only moves the posterior when it is both informative and competing with a
+small sample; and a Bayesian peeking demo (`P(T>C) > 0.95` stop-early
+rule) inflates the false-win rate ~5% -> ~21%, mirroring Week 1's
+frequentist peeking result. Figures 24-27. `writeups/bayesian_vs_frequentist.md`
+has the full writeup; README and one_pager updated.
+
+Remaining Week 7 items: Streamlit power calculator, interference/network-
+effects note.

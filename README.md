@@ -82,7 +82,8 @@ experimentation-causal-inference/
 │   ├── 03_uplift_modeling.ipynb       # includes cost-based targeting policy
 │   ├── 04_guardrail_simulation.ipynb
 │   ├── 05_bandits.ipynb
-│   └── 06_quasi_experimental_methods.ipynb
+│   ├── 06_quasi_experimental_methods.ipynb
+│   └── 07_bayesian_vs_frequentist.ipynb
 ├── src/
 │   ├── power_analysis.py
 │   ├── cuped.py
@@ -91,14 +92,16 @@ experimentation-causal-inference/
 │   ├── guardrail_simulation.py
 │   ├── bandits.py
 │   ├── instrumental_variables.py
-│   └── propensity_matching.py
+│   ├── propensity_matching.py
+│   └── bayesian_ab.py
 ├── writeups/
 │   ├── power_analysis.md
 │   ├── cuped.md
 │   ├── uplift_modeling.md
 │   ├── metrics_framework.md
 │   ├── bandits_vs_ab_testing.md
-│   └── quasi_experimental_methods.md
+│   ├── quasi_experimental_methods.md
+│   └── bayesian_vs_frequentist.md
 └── requirements.txt
 ```
 
@@ -157,11 +160,13 @@ assignment isn't available.
 - [x] Output: `notebooks/06_quasi_experimental_methods.ipynb` + writeup
 
 ### Optional Phase 7 — Further Stretch
+- [x] Bayesian vs. frequentist comparison on the Hillstrom test — Beta-Bernoulli
+      analysis from scratch, credible intervals / `P(T>C)` / expected loss vs. the
+      z-test, plus prior-sensitivity and Bayesian optional-stopping demos
 - [ ] Streamlit app wrapping the power calculator
-- [ ] Blog-style writeup of CUPED + uplift findings for LinkedIn/portfolio
-- [ ] Bayesian vs. frequentist comparison on the Hillstrom test
 - [ ] Short note on interference/network effects (cluster randomization, switchback
       tests)
+- [x] ~~Blog-style writeup of CUPED + uplift findings~~ — dropped
 
 ## Tech Stack
 
@@ -216,10 +221,11 @@ gunzip data/raw/criteo-uplift.csv.gz
 
 ✅ Core build complete — Phases 1-6 (power analysis, CUPED, uplift modelling,
 metrics framework & guardrails, bandits, quasi-experimental methods) done.
-See checkboxes above for progress and [CLAUDE.md](CLAUDE.md) for the full
-build plan and working conventions. Optional Phase 7 stretch items remain
-open. A one-page portfolio summary of the whole project is at
-[writeups/one_pager.md](writeups/one_pager.md).
+Optional Phase 7 in progress: the Bayesian-vs-frequentist comparison is done;
+the Streamlit power calculator and the interference/network-effects note
+remain. See checkboxes above for progress and [CLAUDE.md](CLAUDE.md) for the
+full build plan and working conventions. A one-page portfolio summary of the
+whole project is at [writeups/one_pager.md](writeups/one_pager.md).
 
 **Phase 1 summary:** Built a two-proportion-test power/MDE calculator
 (`src/power_analysis.py`, cross-checked against `statsmodels`), used it to show
@@ -297,3 +303,19 @@ the true 0.0766 ATE closely (IPW within 0.5%) from a sample where the
 naive comparison was 56.5% too high. See
 `notebooks/06_quasi_experimental_methods.ipynb` and
 `writeups/quasi_experimental_methods.md`.
+
+**Phase 7 summary (optional stretch, in progress):** Implemented the
+Beta-Bernoulli Bayesian A/B analysis from scratch (`src/bayesian_ab.py`) —
+posterior credible intervals, `P(treatment > control)`, and decision-theoretic
+expected loss — alongside the Week 1 z-test on the same Womens-vs-No-Email
+comparison. At Hillstrom's full sample the credible interval and the
+confidence interval match to four decimal places, so the choice of framework
+is about what you may claim, not the result. The frameworks diverge where it
+counts: at n=150/arm the z-test is inconclusive (p=0.31) while the Bayesian
+expected-loss framing still yields a defensible ship decision; a prior only
+moves the posterior when it is both informative and competing with a small
+sample; and a `P(T>C) > 0.95` stop-early rule inflates the false-win rate
+from ~5% to ~21% under peeking — the same failure as Week 1's frequentist
+demo, in Bayesian clothing. See
+`notebooks/07_bayesian_vs_frequentist.ipynb` and
+`writeups/bayesian_vs_frequentist.md`.

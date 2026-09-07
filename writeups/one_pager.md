@@ -84,6 +84,18 @@ RCT (real outcomes, biased retention only) and confirmed all three methods
 recover the already-known true ATE closely (IPW within **0.5%**) from a
 sample where the naive comparison was **56.5% too high**.
 
+**Phase 7 — Bayesian vs. frequentist** (Hillstrom; optional stretch, in
+progress). Built the Beta-Bernoulli Bayesian A/B analysis from scratch —
+credible intervals, `P(treatment > control)`, decision-theoretic expected
+loss — next to the Week 1 z-test on the same comparison. At full sample the
+credible and confidence intervals **match to four decimal places**: the
+framework choice is about what you may claim, not the answer. They diverge
+where it matters — at n=150/arm the z-test is inconclusive (p=0.31) while
+the Bayesian expected-loss framing still gives a defensible ship call; the
+prior only moves the posterior when it's both informative and fighting a
+small sample; and a `P(T>C) > 0.95` early-stop rule inflates the false-win
+rate from ~5% to ~21% under peeking — Week 1's trap in Bayesian clothing.
+
 ## Why this matters
 
 Every result above ties a statistical technique to a business number or a
@@ -93,10 +105,10 @@ how much traffic it costs to trust it, and what it's worth once you do.
 
 ## What's next
 
-The core 6-week build is complete. Optional stretch extensions (a
-Streamlit app wrapping the power calculator, a Bayesian-vs-frequentist
-comparison, a short note on interference/network effects) are listed as
-Phase 7 in `CLAUDE.md` if the project continues further.
+The core 6-week build is complete and the Bayesian-vs-frequentist stretch
+item is done. Remaining Phase 7 extensions in `CLAUDE.md`: a Streamlit app
+wrapping the power calculator, and a short note on interference/network
+effects.
 
 ---
 *Full repo, code, and writeups: see the [README](../README.md).*
