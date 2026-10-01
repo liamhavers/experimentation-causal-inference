@@ -321,7 +321,10 @@ naive comparison was 56.5% too high. See
 `notebooks/06_quasi_experimental_methods.ipynb` and
 `writeups/quasi_experimental_methods.md`.
 
-**Phase 7 summary (optional stretch, in progress):** Implemented the
+**Phase 7 summary (optional stretch, complete):** Three stretch items, all
+done — a Bayesian-vs-frequentist comparison, a Streamlit power calculator,
+and an interference/network-effects note (the planned blog-style writeup
+was dropped). First, implemented the
 Beta-Bernoulli Bayesian A/B analysis from scratch (`src/bayesian_ab.py`) —
 posterior credible intervals, `P(treatment > control)`, and decision-theoretic
 expected loss — alongside the Week 1 z-test on the same Womens-vs-No-Email
